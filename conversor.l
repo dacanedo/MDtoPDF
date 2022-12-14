@@ -8,15 +8,15 @@
 %option yylineno
 
 letra [a-zA-Z]
-numero [0-9]
+numero [0-9]+
 palabra {letra}
 espacio [ \t]+
-nueva_linea "\n"
-simbolo "#"
+nueva_linea [\n]+{espacio}[\n]+
+cabecera #|##|###|####|#####
 
 %%
 
-{simbolo}                                                   {yylval.tipo_string = strdup(yytext); return CABECERA;}
+{cabecera}                                                   {yylval.tipo_string = strdup(yytext); return CABECERA;}
 ({palabra}|{numero})                                        {yylval.tipo_string = strdup(yytext); return TEXTO;}
 {nueva_linea}                                               {yylval.tipo_string = strdup(yytext); return NUEVA_LINEA;}
 {espacio}                                                   {yylval.tipo_string = strdup(yytext); return ESPACIO;}
