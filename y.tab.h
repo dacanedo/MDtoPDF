@@ -65,7 +65,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 13 "conversor.y"
+#line 14 "conversor.y"
 
 int tipo_int;
 char * tipo_string;

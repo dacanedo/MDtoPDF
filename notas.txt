@@ -1,42 +1,19 @@
-%{
-#include <stdio.h>
-#include <string.h>
+Body               := Paragraph*
 
-/* Define token types */
-#define HEADING 1
-#define BOLD 2
-#define ITALIC 3
-#define CODE 4
-#define PARAGRAPH 5
+Paragraph          := SentenceAndNewline
+                    | SentenceAndEOF
+                    
+SentenceAndNewline := Sentence+ NEWLINE NEWLINE
+SentencesAndEOF    := Sentence+ NEWLINE EOF
+                    | Sentence+ EOF
+                    
+Sentence           := EmphasizedText
+                    | BoldText
+                    | Text
+                    
+EmphasizedText     := UNDERSCORE BoldText UNDERSCORE
 
-/* Global variables */
-char *yytext;
-int yyleng;
-
-/* Function to print tokens */
-void print_token(int type, char *text) {
-  printf("%d: %s\n", type, text);
-}
-%}
-
-/* Regular expressions for token patterns */
-
-/* Headings */
-"#" {yyleng=1; yytext=strdup(yytext); print_token(HEADING, yytext);}
-
-/* Bold text */
-"**" {yyleng=2; yytext=strdup(yytext); print_token(BOLD, yytext);}
-
-/* Italic text */
-"_" {yyleng=1; yytext=strdup(yytext); print_token(ITALIC, yytext);}
-
-/* Code blocks */
-"`" {yyleng=1; yytext=strdup(yytext); print_token(CODE, yytext);}
-
-/* Paragraphs */
-"\n\n" {yyleng=2; yytext=strdup(yytext); print_token(PARAGRAPH, yytext);}
-
-/* Ignore everything else */
-.|\n
-
-%%
+BoldText           := UNDERSCORE UNDERSCORE TEXT UNDERSCORE UNDERSCORE
+                    | STAR STAR TEXT STAR STAR
+                    
+Text               := TEXT

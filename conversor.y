@@ -7,6 +7,7 @@ extern FILE *yyin;
 FILE * output;
 int yylex (void);
 int yyerror (char const *s);
+void escribir_pdf(char * tipo, int opcion[]);
 extern int yylineno;
 %}
 
@@ -25,17 +26,17 @@ s: documento;
 documento:  /*Vacio*/
           | documento parrafo;
 
-parrafo:  NUEVA_LINEA parrafo{char s[12] = "NUEVA_LINEA"; escribir_pdf(s, 0);} //Aqui la opcion de escribir pdf no hace nada asi que pongo 0
-        | contenido parrafo {add_element(html_doc, $<tipo_string>1);} //AQUI AÑADE CONTENIDO
+parrafo:  NUEVA_LINEA parrafo //Aqui la opcion de escribir pdf no hace nada asi que pongo 0
+        | contenido parrafo  //AQUI AÑADE CONTENIDO
         | ;
 
 contenido:  cabecera
-          | texto {generate_paragraph($<tipo_string>1);}; //AQUI GENERA PARRAFO (TEXTO)
+          | texto; //AQUI GENERA PARRAFO (TEXTO)
 
-cabecera: CABECERA ESPACIO texto {generate_header(strlen($1), $<tipo_string>3);}; //AQUI GENERA CABECERA
+cabecera: CABECERA ESPACIO texto;  //AQUI GENERA CABECERA
 
-texto:  TEXTO NUEVA_LINEA texto {strappend($1, $<tipo_string>3);}; //AQUI JUNTA $1 Y $3 CREO
-      | TEXTO ESPACIO texto {strappend($1, $<tipo_string>3);}; //AQUI JUNTA $1 Y $3 CREO
+texto:  TEXTO NUEVA_LINEA texto  //AQUI JUNTA $1 Y $3 CREO
+      | TEXTO ESPACIO texto; //AQUI JUNTA $1 Y $3 CREO
       | TEXTO
       | ;  
 
@@ -49,14 +50,15 @@ int main(int argc, char *argv[]) {
     }
     yyin = fconfig;
     int result = yyparse();
-    output_result(output); //Mirar como devolver el pdf resultado
+    //output_result en output Mirar como devolver el pdf resultado
+    printf("Correct markdown syntax\n");
     return result;
 }
 
 int yyerror(const char* s){
     extern char *yytext;
     printf("error while parsing line %d: %s at '%s', ASCII code: %d\n", yylineno, s, yytext, (int)(*yytext));
-    return 1;
+    exit(1);
 }
 
 void escribir_pdf(char * tipo, int opcion[]) { //Esta funcion va a ir escribiendo en el pdf lo que se va leyendo del markdown

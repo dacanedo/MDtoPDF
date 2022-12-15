@@ -73,12 +73,13 @@
 #include <stdlib.h>
 
 extern FILE *yyin;
-Html_Doc *html_doc;
+FILE * output;
 int yylex (void);
 int yyerror (char const *s);
+void escribir_pdf(char * tipo, int opcion[]);
 extern int yylineno;
 
-#line 82 "y.tab.c"
+#line 83 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -142,12 +143,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 13 "conversor.y"
+#line 14 "conversor.y"
 
 int tipo_int;
 char * tipo_string;
 
-#line 151 "y.tab.c"
+#line 152 "y.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -466,16 +467,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  3
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   11
+#define YYLAST   12
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  7
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  7
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  13
+#define YYNRULES  14
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  18
+#define YYNSTATES  19
 
 #define YYUNDEFTOK  2
 #define YYMAXUTOK   261
@@ -523,8 +524,8 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    23,    23,    25,    26,    28,    29,    31,    32,    34,
-      36,    37,    38,    39
+       0,    24,    24,    26,    27,    29,    30,    31,    33,    34,
+      36,    38,    39,    40,    41
 };
 #endif
 
@@ -562,8 +563,8 @@ static const yytype_int16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -9,     8,    -3,    -9,     3,     1,    -9,    -9,     5,    -9,
-      -9,     7,     7,     7,    -9,    -9,    -9,    -9
+      -9,     7,    -3,    -9,     5,     4,    -3,    -9,    -3,    -9,
+      -9,     8,     8,     8,    -9,    -9,    -9,    -9,    -9
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -571,14 +572,14 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       3,     0,     2,     1,     0,     0,     5,     4,     0,     7,
-       8,    13,    13,    13,     6,     9,    10,    11
+       3,     0,     2,     1,     0,    13,     7,     4,     7,     8,
+       9,    14,    14,    14,     5,     6,    10,    11,    12
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -9,    -9,    -9,    -9,    -9,    -9,    -8
+      -9,    -9,    -9,     0,    -9,    -9,    -8
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
@@ -592,14 +593,14 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-       4,     5,     6,    15,    16,    17,    12,    13,     3,    11,
-      14,     5
+       4,     5,     6,    16,    17,    18,    14,     3,    15,    12,
+      13,    11,     5
 };
 
 static const yytype_int8 yycheck[] =
 {
-       3,     4,     5,    11,    12,    13,     5,     6,     0,     6,
-       5,     4
+       3,     4,     5,    11,    12,    13,     6,     0,     8,     5,
+       6,     6,     4
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -607,21 +608,21 @@ static const yytype_int8 yycheck[] =
 static const yytype_int8 yystos[] =
 {
        0,     8,     9,     0,     3,     4,     5,    10,    11,    12,
-      13,     6,     5,     6,     5,    13,    13,    13
+      13,     6,     5,     6,    10,    10,    13,    13,    13
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_int8 yyr1[] =
 {
-       0,     7,     8,     9,     9,    10,    10,    11,    11,    12,
-      13,    13,    13,    13
+       0,     7,     8,     9,     9,    10,    10,    10,    11,    11,
+      12,    13,    13,    13,    13
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     1,     0,     2,     1,     2,     1,     1,     3,
-       3,     3,     1,     0
+       0,     2,     1,     0,     2,     2,     2,     0,     1,     1,
+       3,     3,     3,     1,     0
 };
 
 
@@ -1316,44 +1317,8 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 5:
-#line 28 "conversor.y"
-                       {add_linebreak(html_doc);}
-#line 1323 "y.tab.c"
-    break;
 
-  case 6:
-#line 29 "conversor.y"
-                                {add_element(html_doc, (yyvsp[-1].tipo_string));}
-#line 1329 "y.tab.c"
-    break;
-
-  case 8:
-#line 32 "conversor.y"
-                  {generate_paragraph((yyvsp[0].tipo_string));}
-#line 1335 "y.tab.c"
-    break;
-
-  case 9:
-#line 34 "conversor.y"
-                                 {generate_header(strlen((yyvsp[-2].tipo_string)), (yyvsp[0].tipo_string));}
-#line 1341 "y.tab.c"
-    break;
-
-  case 10:
-#line 36 "conversor.y"
-                                {strappend((yyvsp[-2].tipo_string), (yyvsp[0].tipo_string));}
-#line 1347 "y.tab.c"
-    break;
-
-  case 11:
-#line 37 "conversor.y"
-                            {strappend((yyvsp[-2].tipo_string), (yyvsp[0].tipo_string));}
-#line 1353 "y.tab.c"
-    break;
-
-
-#line 1357 "y.tab.c"
+#line 1322 "y.tab.c"
 
       default: break;
     }
@@ -1585,30 +1550,28 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 41 "conversor.y"
+#line 43 "conversor.y"
 
 
 int main(int argc, char *argv[]) {
-    // yydebug = 1;
-
     FILE *fconfig = fopen(argv[1], "r");
-    // make sure it is valid
     if (!fconfig) {
         printf("Error reading file!\n");
         return -1;
     }
-    html_doc = new_html_doc();
-    // set lex to read from file
     yyin = fconfig;
-    int ret = yyparse();
-    output_result(html_doc);
-    del_html_doc(html_doc);
-    return ret;
+    int result = yyparse();
+    //output_result en output Mirar como devolver el pdf resultado
+    printf("Correct markdown syntax\n");
+    return result;
 }
 
 int yyerror(const char* s){
-    extern int yylineno;
     extern char *yytext;
     printf("error while parsing line %d: %s at '%s', ASCII code: %d\n", yylineno, s, yytext, (int)(*yytext));
-    return 1;
+    exit(1);
+}
+
+void escribir_pdf(char * tipo, int opcion[]) { //Esta funcion va a ir escribiendo en el pdf lo que se va leyendo del markdown
+//Alomejor necesito de alguna libreria para escribir pdfs
 }
