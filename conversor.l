@@ -20,6 +20,7 @@ cabecera4 \#\#\#\#[ ][^\#\n]*\n
 cabecera5 \#\#\#\#\#[ ][^\#\n]*\n
 negrita \*\*[^\*]*\*\*
 cursiva \_[^\_]*\_
+codigo \`\`\`[^\`]*\`\`\`
 texto ^[^#\n\*\_][^\n]*\n
 espacio [ \t]+
 nueva_linea [\n]+{espacio}[\n]+
@@ -32,6 +33,7 @@ nueva_linea [\n]+{espacio}[\n]+
 {cabecera5}                                  {yylval.tipo_string = strdup(yytext); retrun CABECERA5;}
 {negrita}                                   {yylval.tipo_string = strdup(yytext); retrun TEXTO_NEGRITA;}
 {cursiva}                                   {yylval.tipo_string = strdup(yytext); retrun TEXTO_CURSIVA;}
+{cosigo}                                    {yylval.tipo_string = strdup(yytext); retrun CODIGO;}
 {texto}                                     {yylval.tipo_string = strdup(yytext); retrun TEXTO;}
 {espacio}                                   {yylval.tipo_string = strdup(yytext); retrun ESPACIO;}
 {nueva_linea}                               {yylval.tipo_string = strdup(yytext); retrun NUEVA_LINEA;}
