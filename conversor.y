@@ -17,28 +17,12 @@ char * tipo_string;
 }
 
 %start s
-%token <tipo_string> CABECERA TEXTO NUEVA_LINEA ESPACIO
+%token <tipo_string> CABECERA1 CABECERA2 CABECERA3 CABECERA4 CABECERA5
+%token <tipo_string> TEXTO TEXTO_NEGRITA TEXTO_CURSIVA
+%token <tipo_string> NUEVA_LINEA ESPACIO
 
 %% 
 
-s: documento;
-
-documento:  /*Vacio*/
-          | documento parrafo;
-
-parrafo:  NUEVA_LINEA parrafo //Aqui la opcion de escribir pdf no hace nada asi que pongo 0
-        | contenido parrafo  //AQUI AÑADE CONTENIDO
-        | ;
-
-contenido:  cabecera
-          | texto; //AQUI GENERA PARRAFO (TEXTO)
-
-cabecera: CABECERA ESPACIO texto;  //AQUI GENERA CABECERA
-
-texto:  TEXTO NUEVA_LINEA texto  //AQUI JUNTA $1 Y $3 CREO
-      | TEXTO ESPACIO texto; //AQUI JUNTA $1 Y $3 CREO
-      | TEXTO
-      | ;  
 
 %%
 
