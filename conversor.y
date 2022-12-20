@@ -3,6 +3,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "y.tab.h"
+#include <hpdf.h>
+
 
 extern FILE *yyin;
 FILE * output;
@@ -66,4 +68,37 @@ int yyerror(const char* s){
     extern char *yytext;
     printf("error while parsing line %d: %s at '%s', ASCII code: %d\n", yylineno, s, yytext, (int)(*yytext));
     exit(1);
+}
+
+int escribir_pdf() {
+  HPDF_Doc  pdf;
+  HPDF_Page page;
+
+  pdf = HPDF_New(NULL, NULL);
+  if (!pdf) {
+    printf("error: cannot create PdfDoc object\n");
+    return 1;
+  }
+
+  /* Añadir nuevo objeto pagina */
+  page = HPDF_AddPage(pdf);
+
+  /* Dibujar una linea */
+  HPDF_Page_MoveTo(page, 50, 50);
+  HPDF_Page_LineTo(page, 250, 50);
+  HPDF_Page_Stroke(page);
+
+  /* Escribir un texto */
+  HPDF_Page_BeginText(page);
+  HPDF_Page_MoveTextPos(page, 50, 55);
+  HPDF_Page_ShowText(page, "Hello, World!");
+  HPDF_Page_EndText(page);
+
+  /* Guardar el documento */
+  HPDF_SaveToFile(pdf, "output.pdf");
+
+  /* Limpiar */
+  HPDF_Free(pdf);
+
+  return 0;
 }
