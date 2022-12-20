@@ -19,19 +19,18 @@ int tipo_int;
 char * tipo_string;
 }
 
-%start documento
+%start s
 %token <tipo_string> CABECERA1 CABECERA2 CABECERA3 CABECERA4 CABECERA5
 %token <tipo_string> TEXTO TEXTO_NEGRITA TEXTO_CURSIVA
 %token <tipo_string> NUEVA_LINEA ESPACIO
 %token <tipo_string> CODIGO
 
-%% 
+%%
+
+s: documento;
 
 documento:  bloque
-          | bloque documento
-          | ;
-
-
+          | bloque documento;
 
 bloque: cabecera
      | parrafo;
