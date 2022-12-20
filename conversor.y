@@ -24,6 +24,23 @@ char * tipo_string;
 
 %% 
 
+documento: bloque*
+
+bloque: cabecera
+     | parrafo;
+
+parrafo: texto '\n'
+
+cabecera:  CABECERA1
+         | CABECERA2
+         | CABECERA3
+         | CABECERA4
+         | CABECERA5; 
+
+text:  TEXTO
+     | TEXTO_NEGRITA
+     | TEXTO_CURSIVA
+     | CODIGO;
 
 %%
 
@@ -44,8 +61,4 @@ int yyerror(const char* s){
     extern char *yytext;
     printf("error while parsing line %d: %s at '%s', ASCII code: %d\n", yylineno, s, yytext, (int)(*yytext));
     exit(1);
-}
-
-void escribir_pdf(char * tipo, int opcion[]) { //Esta funcion va a ir escribiendo en el pdf lo que se va leyendo del markdown
-//Alomejor necesito de alguna libreria para escribir pdfs
 }
