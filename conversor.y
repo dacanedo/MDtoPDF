@@ -25,12 +25,16 @@ char * tipo_string;
 
 %% 
 
-documento: bloque'*'
+documento:  bloque
+          | bloque documento
+          | ;
+
+
 
 bloque: cabecera
      | parrafo;
 
-parrafo: texto '\n'
+parrafo: texto;
 
 cabecera:  CABECERA1
          | CABECERA2

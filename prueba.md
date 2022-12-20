@@ -1,7 +1,7 @@
 # MDtoPDF
-Converting Markdown file into PDf with flex and bison
-## subtitulo 1
-### subtitulo 2
-Esto es un simple Markdown file.
-### subtitulo 2
+## MDtoPDF
+Esto es un documento **Negrita* _cursiva_
+Codigo: ``` int x =  0; ```
 
+## Hola
+texto
