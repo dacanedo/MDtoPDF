@@ -10,7 +10,7 @@ extern FILE *yyin;
 FILE * output;
 int yylex (void);
 int yyerror (char const *s);
-void escribir_pdf(char * tipo, int opcion[]);
+int escribir_pdf();
 extern int yylineno;
 %}
 
@@ -70,8 +70,8 @@ int yyerror(const char* s){
     exit(1);
 }
 
-int escribir_pdf() {
-  HPDF_Doc  pdf;
+int escribir_pdf() { /*Utilizar funciones LibHaru*/
+  /*HPDF_Doc  pdf;
   HPDF_Page page;
 
   pdf = HPDF_New(NULL, NULL);
@@ -79,26 +79,21 @@ int escribir_pdf() {
     printf("error: cannot create PdfDoc object\n");
     return 1;
   }
+  */
 
   /* Añadir nuevo objeto pagina */
-  page = HPDF_AddPage(pdf);
+  
 
   /* Dibujar una linea */
-  HPDF_Page_MoveTo(page, 50, 50);
-  HPDF_Page_LineTo(page, 250, 50);
-  HPDF_Page_Stroke(page);
+
 
   /* Escribir un texto */
-  HPDF_Page_BeginText(page);
-  HPDF_Page_MoveTextPos(page, 50, 55);
-  HPDF_Page_ShowText(page, "Hello, World!");
-  HPDF_Page_EndText(page);
+
 
   /* Guardar el documento */
-  HPDF_SaveToFile(pdf, "output.pdf");
+  
 
   /* Limpiar */
-  HPDF_Free(pdf);
 
   return 0;
 }
