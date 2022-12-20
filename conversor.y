@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "y.tab.h"
 
 extern FILE *yyin;
 FILE * output;
@@ -16,7 +17,7 @@ int tipo_int;
 char * tipo_string;
 }
 
-%start s
+%start documento
 %token <tipo_string> CABECERA1 CABECERA2 CABECERA3 CABECERA4 CABECERA5
 %token <tipo_string> TEXTO TEXTO_NEGRITA TEXTO_CURSIVA
 %token <tipo_string> NUEVA_LINEA ESPACIO
@@ -24,7 +25,7 @@ char * tipo_string;
 
 %% 
 
-documento: bloque*
+documento: bloque'*'
 
 bloque: cabecera
      | parrafo;
@@ -37,7 +38,7 @@ cabecera:  CABECERA1
          | CABECERA4
          | CABECERA5; 
 
-text:  TEXTO
+texto:  TEXTO
      | TEXTO_NEGRITA
      | TEXTO_CURSIVA
      | CODIGO;
