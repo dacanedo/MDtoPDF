@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "y.tab.h"
 
 extern FILE *yyin;
 FILE * output;
@@ -16,29 +17,35 @@ int tipo_int;
 char * tipo_string;
 }
 
-%start s
-%token <tipo_string> CABECERA TEXTO NUEVA_LINEA ESPACIO
+%start documento
+%token <tipo_string> CABECERA1 CABECERA2 CABECERA3 CABECERA4 CABECERA5
+%token <tipo_string> TEXTO TEXTO_NEGRITA TEXTO_CURSIVA
+%token <tipo_string> NUEVA_LINEA ESPACIO
+%token <tipo_string> CODIGO
 
 %% 
 
-s: documento;
+documento:  bloque
+          | bloque documento
+          | ;
 
-documento:  /*Vacio*/
-          | documento parrafo;
 
-parrafo:  NUEVA_LINEA parrafo //Aqui la opcion de escribir pdf no hace nada asi que pongo 0
-        | contenido parrafo  //AQUI AÑADE CONTENIDO
-        | ;
 
-contenido:  cabecera
-          | texto; //AQUI GENERA PARRAFO (TEXTO)
+bloque: cabecera
+     | parrafo;
 
-cabecera: CABECERA ESPACIO texto;  //AQUI GENERA CABECERA
+parrafo: texto;
 
-texto:  TEXTO NUEVA_LINEA texto  //AQUI JUNTA $1 Y $3 CREO
-      | TEXTO ESPACIO texto; //AQUI JUNTA $1 Y $3 CREO
-      | TEXTO
-      | ;  
+cabecera:  CABECERA1
+         | CABECERA2
+         | CABECERA3
+         | CABECERA4
+         | CABECERA5; 
+
+texto:  TEXTO
+     | TEXTO_NEGRITA
+     | TEXTO_CURSIVA
+     | CODIGO;
 
 %%
 
@@ -59,8 +66,4 @@ int yyerror(const char* s){
     extern char *yytext;
     printf("error while parsing line %d: %s at '%s', ASCII code: %d\n", yylineno, s, yytext, (int)(*yytext));
     exit(1);
-}
-
-void escribir_pdf(char * tipo, int opcion[]) { //Esta funcion va a ir escribiendo en el pdf lo que se va leyendo del markdown
-//Alomejor necesito de alguna libreria para escribir pdfs
 }
