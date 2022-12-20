@@ -70,7 +70,8 @@ int yyerror(const char* s){
 }
 
 int escribir_pdf() { /*Utilizar funciones LibHaru*/
-  /*HPDF_Doc  pdf;
+
+  HPDF_Doc  pdf;
   HPDF_Page page;
 
   pdf = HPDF_New(NULL, NULL);
@@ -78,7 +79,6 @@ int escribir_pdf() { /*Utilizar funciones LibHaru*/
     printf("error: cannot create PdfDoc object\n");
     return 1;
   }
-  */
 
   /* Añadir nuevo objeto pagina */
   
