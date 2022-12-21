@@ -10,10 +10,11 @@ extern FILE *yyin;
 FILE * output;
 int yylex (void);
 int yyerror (char const *s);
-int escribir_pdf();
 extern int yylineno;
-HPDF_Doc  pdf;                                  /*Creo el pdf que luego devolvere*/
+HPDF_Doc  pdf;                              /*Creo el pdf que luego devolvere*/                           
 HPDF_Page page_1;
+int x = 20;
+
 
 %}
 
@@ -29,8 +30,7 @@ char * tipo_string;
 %token <tipo_string> CODIGO
 
 %%
-
-s: documento {page_1 = HPDF_AddPage (pdf);};
+s: documento;
 
 documento:  bloque
           | bloque documento;
@@ -38,18 +38,73 @@ documento:  bloque
 bloque: cabecera
      | parrafo;
 
-parrafo: texto;
+parrafo: texto
 
-cabecera:  CABECERA1
-         | CABECERA2
-         | CABECERA3
-         | CABECERA4
-         | CABECERA5; 
+cabecera:  CABECERA1 {HPDF_Font font = HPDF_GetFont(pdf, "Helvetica", NULL);
+                      HPDF_Page_SetFontAndSize(page_1, font, 20);
+                      HPDF_Page_BeginText(page_1);
+                      HPDF_Page_SetLineWidth(page_1, 80);
+                      HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, $1+2);
+                      x=x+50;
+                      printf("%d", x);
+                      HPDF_Page_EndText(page_1);}
+         | CABECERA2 {
+                      HPDF_Page_BeginText(page_1);
+                      HPDF_Page_SetLineWidth(page_1, 80);
+                      HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, $1+3);
+                      x=x+50;
+                      printf("%d", x);
+                      HPDF_Page_EndText(page_1);}
+         | CABECERA3 {
+                      HPDF_Page_BeginText(page_1);
+                      HPDF_Page_SetLineWidth(page_1, 80);
+                      HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, $1+4);
+                      x=x+50;
+                      printf("%d", x);
+                      HPDF_Page_EndText(page_1);}
+         | CABECERA4 {
+                      HPDF_Page_BeginText(page_1);
+                      HPDF_Page_SetLineWidth(page_1, 80);
+                      HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, $1+5);
+                      x=x+50;
+                      printf("%d", x);
+                      HPDF_Page_EndText(page_1);}
+         | CABECERA5 {
+                      HPDF_Page_BeginText(page_1);
+                      HPDF_Page_SetLineWidth(page_1, 80);
+                      HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, $1+6);
+                      x=x+50;
+                      printf("%d", x);
+                      HPDF_Page_EndText(page_1);};
 
-texto:  TEXTO
-     | TEXTO_NEGRITA
-     | TEXTO_CURSIVA
-     | CODIGO;
+texto: TEXTO_NEGRITA   {
+                      HPDF_Page_BeginText(page_1);
+                      HPDF_Page_SetLineWidth(page_1, 80);
+                      HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, $1);
+                      x=x+50;
+                      printf("%d", x);
+                      HPDF_Page_EndText(page_1);};
+     | TEXTO_CURSIVA   {
+                      HPDF_Page_BeginText(page_1);
+                      HPDF_Page_SetLineWidth(page_1, 80);
+                      HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, $1);
+                      x=x+50;
+                      printf("%d", x);
+                      HPDF_Page_EndText(page_1);};
+     | CODIGO          {
+                      HPDF_Page_BeginText(page_1);
+                      HPDF_Page_SetLineWidth(page_1, 80);
+                      HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, $1);
+                      x=x+50;
+                      printf("%d", x);
+                      HPDF_Page_EndText(page_1);};
+     | TEXTO           {
+                      HPDF_Page_BeginText(page_1);
+                      HPDF_Page_SetLineWidth(page_1, 80);
+                      HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, $1);
+                      x=x+50;
+                      printf("%d", x);
+                      HPDF_Page_EndText(page_1);};
 
 %%
 
@@ -62,11 +117,15 @@ int main(int argc, char *argv[]) {
     yyin = fconfig;
 
     pdf = HPDF_New(NULL, NULL);
-    if (!pdf) {
-        printf("error: no se puede crear el objeto PdfDoc\n");
-        return 1;
-    }
-    
+                if (!pdf) {
+                    printf("error: no se puede crear el objeto PdfDoc\n");
+                    return 1;
+                };       
+    page_1 = HPDF_AddPage (pdf);
+    HPDF_Font font = HPDF_GetFont(pdf, "Helvetica", NULL);
+    HPDF_Page_SetFontAndSize(page_1, font, 20);
+  
+
     int result = yyparse();                         /*Aqui llamo al parser*/
     printf("Sintaxis Markdown correcta\n");         /*Siempre va a ser correcta*/
     HPDF_SaveToFile (pdf, "salida.pdf");            /*Deberia guardarse en el directorio actual*/
