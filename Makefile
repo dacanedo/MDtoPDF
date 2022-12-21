@@ -1,6 +1,6 @@
 main:
 	flex conversor.l
-	bison -yd -Wconflicts-sr conversor.y
+	bison -yd conversor.y
 	gcc lex.yy.c y.tab.c -o conversor -lfl -ly -lhpdf
 	
 clean:

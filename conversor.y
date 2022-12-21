@@ -58,7 +58,6 @@ int main(int argc, char *argv[]) {
     }
     yyin = fconfig;
     int result = yyparse();
-    //output_result en output Mirar como devolver el pdf resultado
     printf("Correct markdown syntax\n");
     return result;
 }
@@ -72,7 +71,7 @@ int yyerror(const char* s){
 int escribir_pdf() { /*Utilizar funciones LibHaru*/
 
   HPDF_Doc  pdf;
-  HPDF_Page page;
+  HPDF_Page page_1;
 
   pdf = HPDF_New(NULL, NULL);
   if (!pdf) {
@@ -81,7 +80,7 @@ int escribir_pdf() { /*Utilizar funciones LibHaru*/
   }
 
   /* Añadir nuevo objeto pagina */
-  
+  page_1 = HPDF_AddPage (pdf);
 
   /* Dibujar una linea */
 
@@ -90,9 +89,9 @@ int escribir_pdf() { /*Utilizar funciones LibHaru*/
 
 
   /* Guardar el documento */
-  
+  HPDF_SaveToFile (pdf, "salida.pdf"); //Deberia guardarse en el directorio actual
 
   /* Limpiar */
-
+  HPDF_Free (pdf);
   return 0;
 }
