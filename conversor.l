@@ -20,7 +20,7 @@ cabecera4 \#\#\#\#[ ][^\#\n]*\n
 cabecera5 \#\#\#\#\#[ ][^\#\n]*\n
 negrita \*\*[^\*]*\*\*
 cursiva \_[^\_]*\_
-codigo \`\`\`[^\`]*\`\`\`
+codigo \`\`\`[^\`]*\`\`\`\n
 texto ^[^#\n\*\_][^\n]*\n
 espacio [ \t]+
 nueva_linea [\n]+{espacio}[\n]+

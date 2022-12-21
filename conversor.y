@@ -13,7 +13,7 @@ int yyerror (char const *s);
 extern int yylineno;
 HPDF_Doc  pdf;                              /*Creo el pdf que luego devolvere*/                           
 HPDF_Page page_1;
-int x = 20;
+int x = 30;
 void substring(char s[], char sub[], int p, int l);
 
 
@@ -42,35 +42,39 @@ bloque: cabecera
 parrafo: texto
 
 cabecera:  CABECERA1 {HPDF_Font font = HPDF_GetFont(pdf, "Helvetica", NULL);
-                      HPDF_Page_SetFontAndSize(page_1, font, 20);
+                      HPDF_Page_SetFontAndSize(page_1, font, 30);
                       HPDF_Page_BeginText(page_1);
                       HPDF_Page_SetLineWidth(page_1, 80);
                       HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, $1+2);
                       x=x+50;
                       printf("%d", x);
                       HPDF_Page_EndText(page_1);}
-         | CABECERA2 {
+         | CABECERA2 {HPDF_Font font = HPDF_GetFont(pdf, "Helvetica", NULL);
+                      HPDF_Page_SetFontAndSize(page_1, font, 26);
                       HPDF_Page_BeginText(page_1);
                       HPDF_Page_SetLineWidth(page_1, 80);
                       HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, $1+3);
                       x=x+50;
                       printf("%d", x);
                       HPDF_Page_EndText(page_1);}
-         | CABECERA3 {
+         | CABECERA3 {HPDF_Font font = HPDF_GetFont(pdf, "Helvetica", NULL);
+                      HPDF_Page_SetFontAndSize(page_1, font, 22);
                       HPDF_Page_BeginText(page_1);
                       HPDF_Page_SetLineWidth(page_1, 80);
                       HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, $1+4);
                       x=x+50;
                       printf("%d", x);
                       HPDF_Page_EndText(page_1);}
-         | CABECERA4 {
+         | CABECERA4 {HPDF_Font font = HPDF_GetFont(pdf, "Helvetica", NULL);
+                      HPDF_Page_SetFontAndSize(page_1, font, 18);
                       HPDF_Page_BeginText(page_1);
                       HPDF_Page_SetLineWidth(page_1, 80);
                       HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, $1+5);
                       x=x+50;
                       printf("%d", x);
                       HPDF_Page_EndText(page_1);}
-         | CABECERA5 {
+         | CABECERA5 {HPDF_Font font = HPDF_GetFont(pdf, "Helvetica", NULL);
+                      HPDF_Page_SetFontAndSize(page_1, font, 14);
                       HPDF_Page_BeginText(page_1);
                       HPDF_Page_SetLineWidth(page_1, 80);
                       HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, $1+6);
@@ -89,8 +93,7 @@ texto: TEXTO_NEGRITA   {
                       x=x+20;
                       printf("%d", x);
                       HPDF_Page_EndText(page_1);};
-     | TEXTO_CURSIVA   {
-                      char * cadena = malloc(800);
+     | TEXTO_CURSIVA   {char * cadena = malloc(800);
                       substring($1, cadena, 2, strlen($1)-2);
                       HPDF_Font font = HPDF_GetFont(pdf, "Helvetica-Oblique", NULL);
                       HPDF_Page_SetFontAndSize(page_1, font, 10);
@@ -100,10 +103,17 @@ texto: TEXTO_NEGRITA   {
                       x=x+20;
                       printf("%d", x);
                       HPDF_Page_EndText(page_1);};
-     | CODIGO          {
+     | CODIGO          {char * cadena = malloc(800);
+                      substring($1, cadena, 4, strlen($1)-7);
+                      HPDF_Font font = HPDF_GetFont(pdf, "Helvetica", NULL);
+                      HPDF_Page_SetFontAndSize(page_1, font, 12);
+                      HPDF_RGBColor grey = {0.5, 0.5, 0.5};
+                      HPDF_Page_SetRGBFill(page_1, grey.r, grey.g, grey.b);
+                      HPDF_Page_Rectangle(page_1, 50, 50, 200, 100);
+                      HPDF_Page_Fill(page_1);
                       HPDF_Page_BeginText(page_1);
                       HPDF_Page_SetLineWidth(page_1, 80);
-                      HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, $1);
+                      HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, cadena);
                       x=x+20;
                       printf("%d", x);
                       HPDF_Page_EndText(page_1);};
