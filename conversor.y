@@ -78,6 +78,8 @@ cabecera:  CABECERA1 {HPDF_Font font = HPDF_GetFont(pdf, "Helvetica", NULL);
                       HPDF_Page_EndText(page_1);};
 
 texto: TEXTO_NEGRITA   {
+                      HPDF_Font font = HPDF_GetFont(pdf, "Helvetica-bold", NULL);
+                      HPDF_Page_SetFontAndSize(page_1, font, 10);
                       HPDF_Page_BeginText(page_1);
                       HPDF_Page_SetLineWidth(page_1, 80);
                       HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, $1);
