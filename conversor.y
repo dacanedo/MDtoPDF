@@ -82,8 +82,7 @@ cabecera:  CABECERA1 {HPDF_Font font = HPDF_GetFont(pdf, "Helvetica", NULL);
                       printf("%d", x);
                       HPDF_Page_EndText(page_1);};
 
-texto: TEXTO_NEGRITA   {
-                      char * cadena = malloc(800);
+texto: TEXTO_NEGRITA  {char * cadena = malloc(800);
                       substring($1, cadena, 3, strlen($1)-4);
                       HPDF_Font font = HPDF_GetFont(pdf, "Helvetica-Bold", NULL);
                       HPDF_Page_SetFontAndSize(page_1, font, 10);
@@ -93,7 +92,7 @@ texto: TEXTO_NEGRITA   {
                       x=x+20;
                       printf("%d", x);
                       HPDF_Page_EndText(page_1);};
-     | TEXTO_CURSIVA   {char * cadena = malloc(800);
+     | TEXTO_CURSIVA  {char * cadena = malloc(800);
                       substring($1, cadena, 2, strlen($1)-2);
                       HPDF_Font font = HPDF_GetFont(pdf, "Helvetica-Oblique", NULL);
                       HPDF_Page_SetFontAndSize(page_1, font, 10);
@@ -103,21 +102,21 @@ texto: TEXTO_NEGRITA   {
                       x=x+20;
                       printf("%d", x);
                       HPDF_Page_EndText(page_1);};
-     | CODIGO          {char * cadena = malloc(800);
+     | CODIGO         {char * cadena = malloc(800);
                       substring($1, cadena, 4, strlen($1)-7);
                       HPDF_Font font = HPDF_GetFont(pdf, "Helvetica", NULL);
                       HPDF_Page_SetFontAndSize(page_1, font, 12);
-                      HPDF_RGBColor grey = {0.5, 0.5, 0.5};
-                      HPDF_Page_SetRGBFill(page_1, grey.r, grey.g, grey.b);
-                      HPDF_Page_Rectangle(page_1, 50, 50, 200, 100);
+                      HPDF_Page_SetRGBFill(page_1, 0.8, 0.8, 0.8);
+                      HPDF_Page_Rectangle(page_1, 50, HPDF_Page_GetHeight(page_1)-x-7, 200, 16);
                       HPDF_Page_Fill(page_1);
+                      HPDF_Page_SetRGBFill(page_1, 0, 0, 0);
                       HPDF_Page_BeginText(page_1);
                       HPDF_Page_SetLineWidth(page_1, 80);
                       HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, cadena);
                       x=x+20;
                       printf("%d", x);
                       HPDF_Page_EndText(page_1);};
-     | TEXTO           {
+     | TEXTO          {
                       HPDF_Font font = HPDF_GetFont(pdf, "Helvetica", NULL);
                       HPDF_Page_SetFontAndSize(page_1, font, 10);
                       HPDF_Page_BeginText(page_1);

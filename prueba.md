@@ -6,4 +6,11 @@
 **Esto es una linea en negrita**
 _Esto es una linea en cursiva_
 Esto es una linea en texto normal
-``` esto es codigo ```
+``` esto_es_codigo; ```
+hola
+holaaaaa
+```otrocodigo;```
+hola
+##### Heading5
+## Heading2
+``` esto_es_codigo; ```
