@@ -14,6 +14,7 @@ extern int yylineno;
 HPDF_Doc  pdf;                              /*Creo el pdf que luego devolvere*/                           
 HPDF_Page page_1;
 int x = 20;
+void substring(char s[], char sub[], int p, int l);
 
 
 %}
@@ -78,33 +79,41 @@ cabecera:  CABECERA1 {HPDF_Font font = HPDF_GetFont(pdf, "Helvetica", NULL);
                       HPDF_Page_EndText(page_1);};
 
 texto: TEXTO_NEGRITA   {
-                      HPDF_Font font = HPDF_GetFont(pdf, "Helvetica-bold", NULL);
+                      char * cadena = malloc(800);
+                      substring($1, cadena, 3, strlen($1)-4);
+                      HPDF_Font font = HPDF_GetFont(pdf, "Helvetica-Bold", NULL);
                       HPDF_Page_SetFontAndSize(page_1, font, 10);
                       HPDF_Page_BeginText(page_1);
                       HPDF_Page_SetLineWidth(page_1, 80);
-                      HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, $1);
-                      x=x+50;
+                      HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, cadena);
+                      x=x+20;
                       printf("%d", x);
                       HPDF_Page_EndText(page_1);};
      | TEXTO_CURSIVA   {
+                      char * cadena = malloc(800);
+                      substring($1, cadena, 2, strlen($1)-2);
+                      HPDF_Font font = HPDF_GetFont(pdf, "Helvetica-Oblique", NULL);
+                      HPDF_Page_SetFontAndSize(page_1, font, 10);
                       HPDF_Page_BeginText(page_1);
                       HPDF_Page_SetLineWidth(page_1, 80);
-                      HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, $1);
-                      x=x+50;
+                      HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, cadena);
+                      x=x+20;
                       printf("%d", x);
                       HPDF_Page_EndText(page_1);};
      | CODIGO          {
                       HPDF_Page_BeginText(page_1);
                       HPDF_Page_SetLineWidth(page_1, 80);
                       HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, $1);
-                      x=x+50;
+                      x=x+20;
                       printf("%d", x);
                       HPDF_Page_EndText(page_1);};
      | TEXTO           {
+                      HPDF_Font font = HPDF_GetFont(pdf, "Helvetica", NULL);
+                      HPDF_Page_SetFontAndSize(page_1, font, 10);
                       HPDF_Page_BeginText(page_1);
                       HPDF_Page_SetLineWidth(page_1, 80);
                       HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, $1);
-                      x=x+50;
+                      x=x+20;
                       printf("%d", x);
                       HPDF_Page_EndText(page_1);};
 
@@ -138,4 +147,14 @@ int yyerror(const char* s){
     extern char *yytext;
     printf("error while parsing line %d: %s at '%s', ASCII code: %d\n", yylineno, s, yytext, (int)(*yytext));
     exit(1);
+}
+
+void substring(char s[], char sub[], int p, int l) {
+   int c = 0;
+   
+   while (c < l) {
+      sub[c] = s[p+c-1];
+      c++;
+   }
+   sub[c] = '\0';
 }
