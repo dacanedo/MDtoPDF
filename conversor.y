@@ -12,6 +12,9 @@ int yylex (void);
 int yyerror (char const *s);
 int escribir_pdf();
 extern int yylineno;
+HPDF_Doc  pdf;                                  /*Creo el pdf que luego devolvere*/
+HPDF_Page page_1;
+
 %}
 
 %union {
@@ -27,7 +30,7 @@ char * tipo_string;
 
 %%
 
-s: documento;
+s: documento {page_1 = HPDF_AddPage (pdf);};
 
 documento:  bloque
           | bloque documento;
@@ -57,8 +60,16 @@ int main(int argc, char *argv[]) {
         return -1;
     }
     yyin = fconfig;
-    int result = yyparse();
-    printf("Correct markdown syntax\n");
+
+    pdf = HPDF_New(NULL, NULL);
+    if (!pdf) {
+        printf("error: no se puede crear el objeto PdfDoc\n");
+        return 1;
+    }
+    
+    int result = yyparse();                         /*Aqui llamo al parser*/
+    printf("Sintaxis Markdown correcta\n");         /*Siempre va a ser correcta*/
+    HPDF_SaveToFile (pdf, "salida.pdf");            /*Deberia guardarse en el directorio actual*/
     return result;
 }
 
@@ -66,32 +77,4 @@ int yyerror(const char* s){
     extern char *yytext;
     printf("error while parsing line %d: %s at '%s', ASCII code: %d\n", yylineno, s, yytext, (int)(*yytext));
     exit(1);
-}
-
-int escribir_pdf() { /*Utilizar funciones LibHaru*/
-
-  HPDF_Doc  pdf;
-  HPDF_Page page_1;
-
-  pdf = HPDF_New(NULL, NULL);
-  if (!pdf) {
-    printf("error: cannot create PdfDoc object\n");
-    return 1;
-  }
-
-  /* Añadir nuevo objeto pagina */
-  page_1 = HPDF_AddPage (pdf);
-
-  /* Dibujar una linea */
-
-
-  /* Escribir un texto */
-
-
-  /* Guardar el documento */
-  HPDF_SaveToFile (pdf, "salida.pdf"); //Deberia guardarse en el directorio actual
-
-  /* Limpiar */
-  HPDF_Free (pdf);
-  return 0;
 }
