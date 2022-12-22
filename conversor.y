@@ -39,7 +39,7 @@ documento:  bloque
 bloque: cabecera
      | parrafo;
 
-parrafo: texto
+parrafo: texto;
 
 cabecera:  CABECERA1 {HPDF_Font font = HPDF_GetFont(pdf, "Helvetica", NULL);
                       HPDF_Page_SetFontAndSize(page_1, font, 30);
@@ -165,7 +165,7 @@ int main(int argc, char *argv[]) {
   
 
     int result = yyparse();                         /*Aqui llamo al parser*/
-    printf("Sintaxis Markdown correcta\n");         /*Siempre va a ser correcta*/
+    printf("Documento Markdown correcto\n");        /*Siempre va a ser correcta*/
     HPDF_SaveToFile (pdf, "salida.pdf");            /*Guarda el PDF en el directorio actual*/
     fclose(log_file);                               /*Cierro el fichero*/
     return result;
