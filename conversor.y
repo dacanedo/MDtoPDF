@@ -7,7 +7,7 @@
 
 
 extern FILE *yyin;
-FILE * output;
+FILE * log_file;
 int yylex (void);
 int yyerror (char const *s);
 extern int yylineno;
@@ -47,7 +47,8 @@ cabecera:  CABECERA1 {HPDF_Font font = HPDF_GetFont(pdf, "Helvetica", NULL);
                       HPDF_Page_SetLineWidth(page_1, 80);
                       HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, $1+2);
                       x=x+50;
-                      printf("%d", x);
+                      fprintf(log_file, "Se ha escrito CABECERA1\n");
+                      fprintf(log_file, "X se encuentra en la posicion: %d\n", x);
                       HPDF_Page_EndText(page_1);}
          | CABECERA2 {HPDF_Font font = HPDF_GetFont(pdf, "Helvetica", NULL);
                       HPDF_Page_SetFontAndSize(page_1, font, 26);
@@ -55,7 +56,8 @@ cabecera:  CABECERA1 {HPDF_Font font = HPDF_GetFont(pdf, "Helvetica", NULL);
                       HPDF_Page_SetLineWidth(page_1, 80);
                       HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, $1+3);
                       x=x+50;
-                      printf("%d", x);
+                      fprintf(log_file, "Se ha escrito CABECERA2\n");
+                      fprintf(log_file, "X in position: %d\n", x);
                       HPDF_Page_EndText(page_1);}
          | CABECERA3 {HPDF_Font font = HPDF_GetFont(pdf, "Helvetica", NULL);
                       HPDF_Page_SetFontAndSize(page_1, font, 22);
@@ -63,7 +65,8 @@ cabecera:  CABECERA1 {HPDF_Font font = HPDF_GetFont(pdf, "Helvetica", NULL);
                       HPDF_Page_SetLineWidth(page_1, 80);
                       HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, $1+4);
                       x=x+50;
-                      printf("%d", x);
+                      fprintf(log_file, "Se ha escrito CABECERA3\n");
+                      fprintf(log_file, "X in position: %d\n", x);
                       HPDF_Page_EndText(page_1);}
          | CABECERA4 {HPDF_Font font = HPDF_GetFont(pdf, "Helvetica", NULL);
                       HPDF_Page_SetFontAndSize(page_1, font, 18);
@@ -71,7 +74,8 @@ cabecera:  CABECERA1 {HPDF_Font font = HPDF_GetFont(pdf, "Helvetica", NULL);
                       HPDF_Page_SetLineWidth(page_1, 80);
                       HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, $1+5);
                       x=x+50;
-                      printf("%d", x);
+                      fprintf(log_file, "Se ha escrito CABECERA4\n");
+                      fprintf(log_file, "X in position: %d\n", x);
                       HPDF_Page_EndText(page_1);}
          | CABECERA5 {HPDF_Font font = HPDF_GetFont(pdf, "Helvetica", NULL);
                       HPDF_Page_SetFontAndSize(page_1, font, 14);
@@ -79,7 +83,8 @@ cabecera:  CABECERA1 {HPDF_Font font = HPDF_GetFont(pdf, "Helvetica", NULL);
                       HPDF_Page_SetLineWidth(page_1, 80);
                       HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, $1+6);
                       x=x+50;
-                      printf("%d", x);
+                      fprintf(log_file, "Se ha escrito CABECERA5\n");
+                      fprintf(log_file, "X in position: %d\n", x);
                       HPDF_Page_EndText(page_1);};
 
 texto: TEXTO_NEGRITA  {char * cadena = malloc(800);
@@ -90,6 +95,7 @@ texto: TEXTO_NEGRITA  {char * cadena = malloc(800);
                       HPDF_Page_SetLineWidth(page_1, 80);
                       HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, cadena);
                       x=x+20;
+                      fprintf(log_file, "Se ha escrito TEXTO_NEGRITA\n");
                       printf("%d", x);
                       HPDF_Page_EndText(page_1);};
      | TEXTO_CURSIVA  {char * cadena = malloc(800);
@@ -100,6 +106,7 @@ texto: TEXTO_NEGRITA  {char * cadena = malloc(800);
                       HPDF_Page_SetLineWidth(page_1, 80);
                       HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, cadena);
                       x=x+20;
+                      fprintf(log_file, "Se ha escrito TEXTO_CURSIVA\n");
                       printf("%d", x);
                       HPDF_Page_EndText(page_1);};
      | CODIGO         {char * cadena = malloc(800);
@@ -114,15 +121,17 @@ texto: TEXTO_NEGRITA  {char * cadena = malloc(800);
                       HPDF_Page_SetLineWidth(page_1, 80);
                       HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, cadena);
                       x=x+20;
+                      fprintf(log_file, "Se ha escrito CODIGO\n");
                       printf("%d", x);
                       HPDF_Page_EndText(page_1);};
      | TEXTO          {
-                      HPDF_Font font = HPDF_GetFont(pdf, "Helvetica", NULL);
+                      HPDF_Font font = HPDF_GetFont(pdf, "Courier", NULL);
                       HPDF_Page_SetFontAndSize(page_1, font, 10);
                       HPDF_Page_BeginText(page_1);
                       HPDF_Page_SetLineWidth(page_1, 80);
                       HPDF_Page_TextOut(page_1, 60, HPDF_Page_GetHeight(page_1)-x, $1);
                       x=x+20;
+                      fprintf(log_file, "Se ha escrito TEXTO\n");
                       printf("%d", x);
                       HPDF_Page_EndText(page_1);};
 
@@ -136,6 +145,12 @@ int main(int argc, char *argv[]) {
     }
     yyin = fconfig;
 
+    log_file = fopen("log.txt", "w+");
+    if(!log_file) {
+       printf("Error creating log_file\n");
+       return -1;
+    }
+
     pdf = HPDF_New(NULL, NULL);
                 if (!pdf) {
                     printf("error: no se puede crear el objeto PdfDoc\n");
@@ -148,7 +163,8 @@ int main(int argc, char *argv[]) {
 
     int result = yyparse();                         /*Aqui llamo al parser*/
     printf("Sintaxis Markdown correcta\n");         /*Siempre va a ser correcta*/
-    HPDF_SaveToFile (pdf, "salida.pdf");            /*Deberia guardarse en el directorio actual*/
+    HPDF_SaveToFile (pdf, "salida.pdf");            /*Guarda el PDF en el directorio actual*/
+    fclose(log_file);                               /*Cierro el fichero*/
     return result;
 }
 
