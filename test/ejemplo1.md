@@ -7,10 +7,3 @@
 _Esto es una linea en cursiva_
 Esto es una linea en texto normal
 ``` esto_es_codigo; ```
-hola
-holaaaaa
-```otrocodigo;```
-hola
-##### Heading5
-## Heading2
-``` esto_es_codigo; ```
