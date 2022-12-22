@@ -143,21 +143,21 @@ texto: TEXTO_NEGRITA  {char * cadena = malloc(800);
 int main(int argc, char *argv[]) {
     FILE *fconfig = fopen(argv[1], "r");
     if (!fconfig) {
-        printf("Error reading file!\n");
+        printf("Error leyendo fichero de entrada!\n");
         return -1;
     }
     yyin = fconfig;
 
     log_file = fopen("log.txt", "w+");
     if(!log_file) {
-       printf("Error creating log_file\n");
+       printf("Error creando log_file\n");
        return -1;
     }
 
     pdf = HPDF_New(NULL, NULL);
                 if (!pdf) {
                     printf("error: no se puede crear el objeto PdfDoc\n");
-                    return 1;
+                    return -1;
                 };       
     page_1 = HPDF_AddPage (pdf);
     HPDF_Font font = HPDF_GetFont(pdf, "Helvetica", NULL);
@@ -173,7 +173,7 @@ int main(int argc, char *argv[]) {
 
 int yyerror(const char* s){
     extern char *yytext;
-    printf("error while parsing line %d: %s at '%s', ASCII code: %d\n", yylineno, s, yytext, (int)(*yytext));
+    printf("error de parser en la linea %d: %s en '%s', codigo ASCII: %d\n", yylineno, s, yytext, (int)(*yytext));
     exit(1);
 }
 

@@ -21,7 +21,7 @@ cabecera5 \#\#\#\#\#[ ][^\#\n]*\n
 negrita \*\*[^\*]*\*\*
 cursiva \_[^\_]*\_
 codigo \`\`\`[^\`]*\`\`\`
-texto ^[^#\n\*\_][^\n]*
+texto ^[^#\n\*\_\`][^\n]*
 espacio [ \t]+
 nueva_linea [\n]+{espacio}[\n]+
 
